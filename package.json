@@ -1,0 +1,19 @@
+{
+  "name": "puppiter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node SiegApi/server.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "fetch": "^1.1.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.3.0"
+  }
+}
