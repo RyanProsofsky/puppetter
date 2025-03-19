@@ -24,7 +24,7 @@ async function sieg(data) {
         //fazendo a requisição
         let formData = new FormData()
 
-        // formData.append("Skip", 0)
+        formData.append("Skip", 1)
 
         let response = await fetch('https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf=', {
                 headers: {
@@ -34,12 +34,12 @@ async function sieg(data) {
                 },
                 method: "POST",
 
-                // body:formData 
+                body:formData 
 
         });
 
         let result = await response.json()
-        console.log(result.ListCertificates[0])
+        console.log(result.ListCompanys[0])
 
 
         //pesquisando as empresas
