@@ -19,7 +19,7 @@ async function sieg(data) {
         await page.click('#btnSubmit')
 
         await page.waitForNavigation();
-
+        
         // await page.waitForSelector('#buttonsPaginateTableAllCompany')
         // await page.click('#buttonsPaginateTableAllCompany > a:nth-child(3)', { delay: 2000 });
         // await page.evaluate(() => {
@@ -27,13 +27,13 @@ async function sieg(data) {
 
         // }).then()
         // // console.log(cookie)
-
-        // let formData = new FormData()
+         // let formData = new FormData()
 
         let formData = '{"Skip":1,"Name":"","CnpjOrCpf":"","CertificateOnly":false,"CertificateStatus":"0","CertificateStatusConsult":"0","ConfigNfeOut":"0","ConfigNfeOutStatus":"0"}'
         let formJson = JSON.parse(formData)
 
-        console.log(typeof (formJson))
+        console.log(typeof(formJson))
+
 
         //fazendo a requisição
         let response = await fetch('https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf=', {
