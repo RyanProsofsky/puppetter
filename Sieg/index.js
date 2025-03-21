@@ -1,12 +1,10 @@
 import puppeteer from "puppeteer";
 import fetch from "node-fetch"
-
-
+import { request } from "express";
 
 async function sieg(data) {
         const browser = await puppeteer.launch({
-                headless: false,
-                executablePath: 'C:\\Users\\ryan-note\\AppData\\Local\\Chromium\\Application\\chrome.exe'
+                headless: false
         });
 
         const page = await browser.newPage();
@@ -14,32 +12,65 @@ async function sieg(data) {
         await page.setViewport({ width: 1920, height: 1080 });
 
         // Indo para a pagina do navegador
-        await page.goto('https://auth.sieg.com/');
+        await page.goto('https://auth.sieg.com/',  { waitUntil: 'networkidle2' });
 
         //Realizando o login
         await page.type('#txtEmail', data.email)
         await page.type('#txtPassword', data.senha)
         await page.click('#btnSubmit')
 
+        // await page.setRequestInterception(true)
+
+        // page.on('request', interceptedRequest => {
+        //         console.log(interceptedRequest.url()) 
+        // });
+
+        // page.on('request',interceptedRequest => {
+        //         if(interceptedRequest.url() == 'https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf='){
+        //                 console.log(interceptedRequest.url())
+        //                 console.log(interceptedRequest.headers())   
+
+        //                 // const cookies = interceptedRequest.cookies()
+        //                 // console.log(cookies)
+                        
+        //         }
+        // })
+
+        // const cookies = await page.evaluate(() => {
+        //         return document.cookie
+        // })
+
+        // console.log(cookies)
+
+
         //fazendo a requisição
-        let formData = new FormData()
+        // let formData = new FormData()
 
-        formData.append("Skip", 1)
+        // formData.append("Skip", 1)
+        // formData.append("Name", "")
+        // formData.append("CnpjOrCpf", "")
+        // formData.append("CertificateOnly", false)
+        // formData.append("CertificateStatus", "0")
+        // formData.append("CertificateStatusConsult", "0")
+        // formData.append("ConfigNfeOut", "0")
+        // formData.append("ConfigNfeOutStatus", "0")
 
-        let response = await fetch('https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf=', {
-                headers: {
-                        "Cookie": "_ga=GA1.2.1235712788.1738668240; darkModeCookie=Off; _sleek_session=%7B%22init%22%3A%222025-02-04T11%3A24%3A16.281Z%22%7D; _hjSessionUser_3570950=eyJpZCI6Ijc2ODlkYTMyLWYwMzEtNTNlZS05ZWUwLTZlYTNmOTQ0NDU2YiIsImNyZWF0ZWQiOjE3Mzg2NjgyNTU1NDQsImV4aXN0aW5nIjp0cnVlfQ==; _cx.tracking.apikey=1c065310ebbb7dc39a79b506ddbf4d38; _cx.tracking.external_id_client=1749; _cx.tracking.email=paulo.silva@itamaraticontabil.com.br; AbbaReport=Off; _gid=GA1.2.681739898.1741798515; COFRE.AUTH=65e04acf-9804-4173-b0f3-40521bcbbd1f; __AntiXsrfToken=52142487e46a41f7bf8eff3ce9602e31; _clck=1mjgfc1%7C2%7Cfu7%7C0%7C1861; modalHubPrint-67d1ead9fd1d113d3bd22bfe20250314=3; modalNps=4; _gat=1; _hjSession_3570950=eyJpZCI6ImZmZGFiMmM4LTQwZjMtNDRmMy1iZGZmLTVjZjg3MTZkZTYyZSIsImMiOjE3NDE5NzI2MDExNjcsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowfQ==; _clsk=296qhq%7C1741972601427%7C1%7C1%7Ci.clarity.ms%2Fcollect; _cx.survey.status=no-survey-found; _BEAMER_FILTER_BY_URL_fxzWhwyU5092=false; AWSALB=c1mIkezHlN1GLSCzCvZBGEq4isEUXXCSbf0FOlClD2AgpUsjeZOpppZY8Q5tPSZ++LgAhGHI68XDhxX9iyjTB/yZhH5a94umhnuIcDkk0tfl2VR9YbaW1voqUvDw; AWSALBCORS=c1mIkezHlN1GLSCzCvZBGEq4isEUXXCSbf0FOlClD2AgpUsjeZOpppZY8Q5tPSZ++LgAhGHI68XDhxX9iyjTB/yZhH5a94umhnuIcDkk0tfl2VR9YbaW1voqUvDw; _ga_0XCNMGZ1WP=GS1.2.1741972601.22.1.1741972631.30.0.0",
-                        "Content-Type": "multipart/form-data",
-                        "Content-Disposition": "form-data; name='json'"
-                },
-                method: "POST",
 
-                body:formData 
 
-        });
+        // await fetch('https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf=', {
+        //         method: "POST",
+        //         headers: {
+        //                 "authority":"hub.sieg.com",
+        //                 "content-type":"multipart/form-data; boundary=----WebKitFormBoundarygcLfxXQuRf5GbEvc",
+        //                 "Content-Disposition": "form-data; name='json'",
+        //                 "scheme":"https"
+        //         },
+        // }).then(response => {
+        //         const cookie = response.headers.get('server')
+        //         console.log(cookie)
+        // })
 
-        let result = await response.json()
-        console.log(result.ListCompanys[0])
+        // console.log(result.ListCompanys)
 
 
         //pesquisando as empresas
@@ -62,5 +93,3 @@ async function sieg(data) {
 }
 
 export default sieg
-
-
