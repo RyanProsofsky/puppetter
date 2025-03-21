@@ -1,12 +1,9 @@
 import puppeteer from "puppeteer";
 import fetch from "node-fetch"
 
-
-
 async function sieg(data) {
         const browser = await puppeteer.launch({
-                headless: false,
-                executablePath: 'C:\\Users\\ryan-note\\AppData\\Local\\Chromium\\Application\\chrome.exe'
+                headless: false
         });
 
         const page = await browser.newPage();
@@ -21,26 +18,36 @@ async function sieg(data) {
         await page.type('#txtPassword', data.senha)
         await page.click('#btnSubmit')
 
+        await page.waitForNavigation();
+
+        // await page.waitForSelector('#buttonsPaginateTableAllCompany')
+        // await page.click('#buttonsPaginateTableAllCompany > a:nth-child(3)', { delay: 2000 });
+        // await page.evaluate(() => {
+        //         return document.cookie
+
+        // }).then()
+        // // console.log(cookie)
+
+        // let formData = new FormData()
+
+        let formData = '{"Skip":1,"Name":"","CnpjOrCpf":"","CertificateOnly":false,"CertificateStatus":"0","CertificateStatusConsult":"0","ConfigNfeOut":"0","ConfigNfeOutStatus":"0"}'
+        let formJson = JSON.parse(formData)
+
+        console.log(typeof (formJson))
+
         //fazendo a requisição
-        let formData = new FormData()
-
-        formData.append("Skip", 1)
-
         let response = await fetch('https://hub.sieg.com/handler/hubInfo.ashx?action=GetCompanysAndCertificates&cnpjOrCpf=', {
-                headers: {
-                        "Cookie": "_ga=GA1.2.1235712788.1738668240; darkModeCookie=Off; _sleek_session=%7B%22init%22%3A%222025-02-04T11%3A24%3A16.281Z%22%7D; _hjSessionUser_3570950=eyJpZCI6Ijc2ODlkYTMyLWYwMzEtNTNlZS05ZWUwLTZlYTNmOTQ0NDU2YiIsImNyZWF0ZWQiOjE3Mzg2NjgyNTU1NDQsImV4aXN0aW5nIjp0cnVlfQ==; _cx.tracking.apikey=1c065310ebbb7dc39a79b506ddbf4d38; _cx.tracking.external_id_client=1749; _cx.tracking.email=paulo.silva@itamaraticontabil.com.br; AbbaReport=Off; _gid=GA1.2.681739898.1741798515; COFRE.AUTH=65e04acf-9804-4173-b0f3-40521bcbbd1f; __AntiXsrfToken=52142487e46a41f7bf8eff3ce9602e31; _clck=1mjgfc1%7C2%7Cfu7%7C0%7C1861; modalHubPrint-67d1ead9fd1d113d3bd22bfe20250314=3; modalNps=4; _gat=1; _hjSession_3570950=eyJpZCI6ImZmZGFiMmM4LTQwZjMtNDRmMy1iZGZmLTVjZjg3MTZkZTYyZSIsImMiOjE3NDE5NzI2MDExNjcsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowfQ==; _clsk=296qhq%7C1741972601427%7C1%7C1%7Ci.clarity.ms%2Fcollect; _cx.survey.status=no-survey-found; _BEAMER_FILTER_BY_URL_fxzWhwyU5092=false; AWSALB=c1mIkezHlN1GLSCzCvZBGEq4isEUXXCSbf0FOlClD2AgpUsjeZOpppZY8Q5tPSZ++LgAhGHI68XDhxX9iyjTB/yZhH5a94umhnuIcDkk0tfl2VR9YbaW1voqUvDw; AWSALBCORS=c1mIkezHlN1GLSCzCvZBGEq4isEUXXCSbf0FOlClD2AgpUsjeZOpppZY8Q5tPSZ++LgAhGHI68XDhxX9iyjTB/yZhH5a94umhnuIcDkk0tfl2VR9YbaW1voqUvDw; _ga_0XCNMGZ1WP=GS1.2.1741972601.22.1.1741972631.30.0.0",
-                        "Content-Type": "multipart/form-data",
-                        "Content-Disposition": "form-data; name='json'"
-                },
                 method: "POST",
-
-                body:formData 
-
+                headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Content-Disposition": "form-data; name='json'",
+                        "Cookie": "__AntiXsrfToken=3fe2732608e54b6d85183ae6e11446f1; _sleek_session=%7B%22init%22%3A%222025-03-18T18%3A48%3A33.321Z%22%7D; darkModeCookie=Off; AbbaReport=Off; _cx.tracking.apikey=1c065310ebbb7dc39a79b506ddbf4d38; _cx.tracking.external_id_client=1749; _cx.tracking.email=paulo.silva@itamaraticontabil.com.br; _cx.survey.status=no-survey-found; _ga=GA1.2.1474817768.1742323913; _sleek_product=%7B%22token%22%3A%22788520897657bd06aa4133f901baf73a625ea4970%22%2C%22user_data%22%3A%7B%22user_id%22%3A884764%2C%22admin_id%22%3A0%2C%22sso%22%3Atrue%2C%22anonymous%22%3Afalse%2C%22data_name%22%3A%22paulo_h_silva628%22%2C%22data_full_name%22%3A%22PAULO%20H%20SILVA%22%2C%22data_mail%22%3A%22paulo.silva%40itamaraticontabil.com.br%22%2C%22data_img%22%3A%22https%3A%2F%2Fstorage.sleekplan.com%2Fproducts%2F489604195%2Fuser%2F884764%2Fa9914f2ee1850953c5e2da80e9f03b42.jpg%22%2C%22segments%22%3A%5B%22clientes-hub-e-iris672e0a1f908d3%22%2C%22planos672e06590fd4c%22%2C%22pernambuco672e043b552ec%22%5D%2C%22notify%22%3A1%2C%22notify_settings%22%3A%7B%22mention%22%3Atrue%2C%22changelog%22%3Atrue%2C%22subscribed%22%3Atrue%7D%7D%7D; modalNps=4; COFRE.AUTH=5e6a8997-3275-499f-8566-4620206d7fae; AWSALB=QxfoOfI/k+EpgsyVl2g5kjqauyCM7Al3+/r3YJgvxeeOZyeCXjrt4K4wBPXrtU+MSqJ6jLqVZixSNVDBY+ci4T8TC82u2TY0vH7wH+vOZy/UU115EqqGLZYUkvlh; AWSALBCORS=QxfoOfI/k+EpgsyVl2g5kjqauyCM7Al3+/r3YJgvxeeOZyeCXjrt4K4wBPXrtU+MSqJ6jLqVZixSNVDBY+ci4T8TC82u2TY0vH7wH+vOZy/UU115EqqGLZYUkvlh"
+                },
+                body: formData
         });
 
         let result = await response.json()
         console.log(result.ListCompanys[0])
-
 
         //pesquisando as empresas
         // for (let i = 0; i < data.empresa.length; i++) {
@@ -62,5 +69,10 @@ async function sieg(data) {
 }
 
 export default sieg
+
+
+
+
+
 
 
