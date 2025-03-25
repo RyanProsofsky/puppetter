@@ -6,6 +6,8 @@ async function sieg(data) {
                 headless: false
         });
 
+        const arr = []
+
         const page = await browser.newPage();
 
         await page.setViewport({ width: 1920, height: 1080 });
@@ -27,7 +29,7 @@ async function sieg(data) {
         await page.waitForSelector('#buttonsPaginateTableAllCompany')
 
         const lista = await page.evaluate(() => {
-                return document.querySelector('#buttonsPaginateTableAllCompany').children.length
+                return document.querySelector('#buttonsPaginateTableAllCompany').children.length - 2
         })
 
         for (let x = 0; x < lista; x++) {
@@ -44,33 +46,19 @@ async function sieg(data) {
                 })
 
                 const result = await response.json()
-                const arr = []
                 arr.push(result.ListCompanys)
 
-                console.log(arr)
-
-
+                // pesquisando as empresas e tirando print da tela
+                for (let y = 0; y < arr[x].length; y++) {
+                        if (arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '04971033000130') {
+                                let id = arr[x][y].Id
+                                await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
+                                await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
+                        }
+                }
         }
-
-        //pesquisando as empresas e tirando print da tela
-
-        // for (let y = 0; y < result.ListCompanys.length; y++) {
-        //         if (result.ListCompanys[y].CnpjOrCpf == '05341231000182') {
-        //                 let id = result.ListCompanys[y].Id
-        //                 await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
-        //                 await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
-
-        //         } else if (result.ListCompanys[y].CnpjOrCpf == '05234343000134') {
-        //                 let id = result.ListCompanys[y].Id
-        //                 await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
-        //                 await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
-
-        //         } else if (result.ListCompanys[y].CnpjOrCpf == '04971033000130') {
-        //                 let id = result.ListCompanys[y].Id
-        //                 await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
-        //                 await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
-        //         }
-        // }
 }
+
+// console.log(arr[0][0].CnpjOrCpf)
 
 export default sieg
