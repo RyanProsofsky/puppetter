@@ -30,11 +30,15 @@ async function sieg(data) {
                 return document.querySelector('#buttonsPaginateTableAllCompany').children.length - 2
         })
 
+        let teste 
+        let arr = []
         let cont = 0
-        const arr = []
-        let newArr
+        let newArr = []
 
+
+        //fazendo a requisição
         while (lista > cont) {
+                //Realizando a paginação
                 const formData = new FormData()
                 formData.append("json", JSON.stringify({ "Skip": `${cont}` }))
 
@@ -48,22 +52,27 @@ async function sieg(data) {
                 })
 
                 const result = await response.json()
-                // console.log(result.ListCompanys[cont].CnpjOrCpf)
 
                 arr.push(result.ListCompanys)
-                newArr = arr.reduce((list, sub) => list.concat(sub), [])      
-                
-                console.log(newArr.length)
-                console.log(newArr[cont])
+                // newArr.push(result.ListCompanys)
+                // console.log(result.ListCompanys.length)
 
-                // if (newArr[cont].CnpjOrCpf == '05234343000134') {
-                //         console.log(newArr[cont].CnpjOrCpf)
-                // }
-                
+                let i = 0
+                while(result.ListCompanys.length > i){
+                        // console.log(arr[cont][i].CnpjOrCpf)
+                        console.log(data.empresa[i].cnpj)
+
+                        i++
+                }
+
+                teste = newArr.concat(arr)
+
                 cont++
-        }
 
-        // console.log(newArr[0].CnpjOrCpf)
+                // newArr = arr.reduce((list, sub) => list.concat(sub), [])
+                // console.log(teste)
+                
+        }  
 }
 
 export default sieg
