@@ -31,8 +31,8 @@ async function sieg(data) {
         })
 
         let cont = 0
-
         const arr = []
+        let newArr
 
         while (lista > cont) {
                 const formData = new FormData()
@@ -51,21 +51,28 @@ async function sieg(data) {
                 // console.log(result.ListCompanys[cont].CnpjOrCpf)
 
                 arr.push(result.ListCompanys)
-                // console.log(arr[cont])
+                newArr = arr.reduce((list, sub) => list.concat(sub), [])      
+                
+                console.log(newArr.length)
+                console.log(newArr[cont])
 
-
-                // pesquisando as empresas e tirando print da tela
-                // if (arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '04971033000130') {
-                //         let id = arr[x][y].Id
-                //         await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
-                //         await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
+                // if (newArr[cont].CnpjOrCpf == '05234343000134') {
+                //         console.log(newArr[cont].CnpjOrCpf)
                 // }
-
+                
                 cont++
         }
 
-        console.log(arr)
-
+        // console.log(newArr[0].CnpjOrCpf)
 }
 
 export default sieg
+
+
+
+// pesquisando as empresas e tirando print da tela
+// if (arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '05234343000134' || arr[x][y].CnpjOrCpf == '04971033000130') {
+//         let id = arr[x][y].Id
+//         await page.goto(`https://hub.sieg.com/detalhes-do-cliente?id=${id}`)
+//         await page.screenshot({ path: `${result.ListCompanys[y].CompanyName}.jpg` })
+// }
